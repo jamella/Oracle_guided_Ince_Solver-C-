@@ -1,4 +1,0 @@
-EXEC      = minisat
-DEPDIR    = mtl utils core
-MROOT	  = Home/Desktop/Parallels\ Shared\ Folders/Github/Oracle_guided_Ince_Solver/Test
-include $(MROOT)/mtl/template.mk

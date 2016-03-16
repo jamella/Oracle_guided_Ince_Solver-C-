@@ -89,14 +89,14 @@ int main(int argc, char** argv)
 
         parseOptions(argc, argv, true);
         
-        SimpSolver  S;          //xiangyu: initialize the solver, this is the first step to use minisat
+        SimpSolver  S;
         double      initial_time = cpuTime();
 
         if (!pre) S.eliminate(true);
 
         S.verbosity = verb;
         
-        solver = &S;        //xiangyu: another step
+        solver = &S;
         // Use signal handlers that forcibly quit until the solver will be able to respond to
         // interrupts:
         signal(SIGINT, SIGINT_exit);
@@ -126,7 +126,7 @@ int main(int argc, char** argv)
         if (argc == 1)
             printf("Reading from standard input... Use '--help' for help.\n");
 
-        gzFile in = (argc == 1) ? gzdopen(0, "rb") : gzopen(argv[1], "rb");     //xiangyu: third step, open input file 
+        gzFile in = (argc == 1) ? gzdopen(0, "rb") : gzopen(argv[1], "rb");
         if (in == NULL)
             printf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
         
@@ -134,7 +134,7 @@ int main(int argc, char** argv)
             printf("============================[ Problem Statistics ]=============================\n");
             printf("|                                                                             |\n"); }
         
-        parse_DIMACS(in, S);        //xiangyu: 4th step, the real step to translate input file into internal data structure
+        parse_DIMACS(in, S);
         gzclose(in);
         FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
 
@@ -151,7 +151,7 @@ int main(int argc, char** argv)
         signal(SIGINT, SIGINT_interrupt);
         signal(SIGXCPU,SIGINT_interrupt);
 
-        S.eliminate(true);      //xiangyu: optional step to eliminate already satisfied file and simplify CNF
+        S.eliminate(true);
         double simplified_time = cpuTime();
         if (S.verbosity > 0){
             printf("|  Simplification time:  %12.2f s                                       |\n", simplified_time - parsed_time);
@@ -178,7 +178,7 @@ int main(int argc, char** argv)
         }
 
         vec<Lit> dummy;
-        lbool ret = S.solveLimited(dummy);      //xiangyu: 5th step, the real action in performing solve
+        lbool ret = S.solveLimited(dummy);
         
         if (S.verbosity > 0){
             printStats(S);
